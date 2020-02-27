@@ -1,0 +1,90 @@
+{% extends 'base.html' %} <!--extending base html page without wtring basic html tags-->
+
+{% block title %}Student Index{% endblock %}
+
+{% load crispy_forms_tags %}
+
+{% block content %}
+
+  <!--Internal CSS-->
+  <style>   
+  #id {
+    font-family: "Trebuchet MS", Arial, Helvetica, sans-serif;
+    border-collapse: collapse;
+    width: 100%;
+  }
+
+  #data td, #data th {
+    border: 1px solid #ddd;
+    padding: 8px;
+  }
+
+  #data tr {background-color: #f2f2f2;}
+
+  #data tr:hover {background-color: #ddd;}
+
+  #data th {
+    padding-top: 12px;
+    padding-bottom: 12px;
+    text-align: left;
+    background-color: Gray;
+    color: white;
+
+  </style>
+  <br>
+  <form method='GET' action='' class="form-inline">
+      <input class="form-control mr-sm-2" type="search" name='q'  placeholder="Search" value='{{ request.GET.q }}' aria-label="Search">
+      <button class="btn btn-outline-success my-2 my-sm-0" type="submit">Search</button>
+  </form><br>
+
+  <table id='data' class="table table-bordered">  <!--all data will display in table formate-->
+    <thead>
+      <tr>
+        <th>ID</th>
+        <th>Name</th>
+        <th>Email</th>
+        <th>Gender</th>
+        <th>ADDRESS</th>
+        <th>CITY</th>
+        <th>Mobile</th>
+        <th>DOB</th>
+        <th>ACTION</th>
+      </tr>
+    </thead>
+    <tbody>
+      
+      {% for row in resultSet %} <!--Using context in for loop-->
+      <tr>
+          <td>{{ row.id }}</td>
+          <td>{{ row.name }}</td>
+          <td>{{ row.email }}</td>
+          <td>{{ row.gender }}</td>
+          <td>{{ row.address }}</td>
+          <td>{{ row.city }}</td>
+          <td>{{ row.mobile }}</td>
+          <td>{{ row.dob }}</td>
+          <td>
+              <a href="{% url 'update' pk=row.pk %}" class="btn btn-primary btn-xs">UPDATE</a> <!--here i'm using pk(primary key) to get selected row information to update-->
+              <a href="/delete?id={{row.id}}" onclick="return deleteItem()" class="btn btn-warning btn-xs">DELETE</a><!--Here i have used JavaScript Function-->
+          </td>
+      </tr>
+      {% endfor %}
+    </tbody>
+  </table>
+
+  <!--this javascrippt function will alert before deleting any information in table-->
+  <script>
+      function deleteItem(){
+
+          if(confirm('Are You Sure To Delete item?'))
+          return true;
+          else return false;
+      }
+  </script>
+
+{% endblock %}
+
+
+
+  
+
